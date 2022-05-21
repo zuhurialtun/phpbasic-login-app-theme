@@ -1,3 +1,12 @@
+<?php 
+include 'fonksiyon/helper.php';
+session_start();
+if(!isset($_SESSION['login'])){
+header('Location:login.php');
+}
+$hakkimda = file_get_contents('db/'.session('kullanici_adi').'.txt');
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,26 +21,34 @@
         form{position: relative;}
     </style>
 </head>
-<body class="bg-dark">
+<body class="<?= cookie('color') ? cookie('color'): 'bg-dark'; ?>">
 <div class="d-flex align-items-center justify-content-center p-4"><img height="" src="kodl.png" alt=""></div>
 <div  class="container d-flex align-items-center justify-content-center">
-    <div class="card bg-dark" style="width: 18rem;">
+    <div class="card <?= cookie('color') ? cookie('color'): 'bg-dark'; ?>" style="width: 18rem;">
         <div class="card-header bg-primary">
             Profilim
         </div>
         <div class="card-body">
-            <h5 class="card-title text-warning">Şahin ERSEVER</h5>
-            <h6 class="card-subtitle mb-2 text-muted">sahin@stebilisim.com</h6>
-            <form action="">
-                <textarea class="form-control bg-dark text-white" name="" id="" cols="30" rows="10">Merhaba, ben Şahin ERSEVER. 10 Ocak 1993 yılında dünyaya geldim, İstanbul Beylikdüzünde yaşıyorum.</textarea>
+            <h5 class="card-title text-warning"><?= session('kullanici_adi') ?></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><?= session('kullanici_eposta') ?></h6>
+            <?php
+            if(get('islem') == 'true'){
+                echo '<div class="alert alert-success">Kayıt Başarılı.</div>';
+            }
+            elseif(get('islem') == 'false'){
+                echo '<div class="alert alert-danger">Kayıt Başarısız!</div>';
+            }
+            ?>
+            <form action="islem.php?islem=hakkimda" method="post">
+                <textarea class="form-control <?= cookie('color') ? cookie('color'): 'bg-dark'; ?> text-muted" name="hakkimda" id="" cols="30" rows="10"><?= htmlspecialchars_decode($hakkimda) ?></textarea>
                 <button class="btn btn-sm btn-primary" type="submit">Kaydet</button>
             </form>
-            <a href="#" class="btn btn-success btn-sm mt-2 w-100">Oturumu Kapat</a><br>
+            <a href="islem.php?islem=logout" class="btn btn-success btn-sm mt-2 w-100">Oturumu Kapat</a><br>
 
         </div>
         <div class="card-footer bg-info d-flex align-items-center justify-content-between">
-            <a href="change-color.php?color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
-            <a href="change-color.php?color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
+            <a href="islem.php?islem=renk&color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
+            <a href="islem.php?islem=renk&color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
         </div>
     </div>
 </div>
