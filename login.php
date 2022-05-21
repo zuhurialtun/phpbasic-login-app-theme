@@ -1,3 +1,8 @@
+<?php   
+include 'fonksiyon/helper.php';
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,28 +17,38 @@
         }
     </style>
 </head>
-<body class="bg-dark">
+<body class="<?= cookie('color') ? cookie('color'): 'bg-dark'; ?>">
 <div class="d-flex align-items-center justify-content-center p-4"><img height="" src="kodl.png" alt=""></div>
 <div  class="container d-flex align-items-center justify-content-center">
-    <div class="card bg-dark" style="width: 18rem;">
+    <div class="card <?= cookie('color') ? cookie('color'): 'bg-dark'; ?>" style="width: 18rem;">
         <div class="card-header bg-primary">
             Giriş Yap
         </div>
         <div class="card-body">
-            <div class="alert alert-danger">Hatalı şifre</div>
-            <form action="" method="post">
+            <?php if(session('error')): ?>
+                <div class="alert alert-danger"><?= session(session:'error'); ?></div>
+            <?php endif; ?>
+            <form action="islem.php?islem=giris" method="post">
                 <label for="username" class="text-success">Kullanıcı Adınız</label>
-                <input type="text" name="username" class="form-control">
+                <input type="text" name="username" value="<?= session(session:'username') ?>" class="form-control">
                 <label for="password" class="text-success">Şifreniz</label>
-                <input type="text" name="password" class="form-control mb-4">
+                <input type="text" name="password" value="<?= session(session:'password') ?>" class="form-control mb-4">
                 <button class="btn btn-success mb-4 w-100">Giriş Yap</button>
             </form>
         </div>
         <div class="card-footer bg-info d-flex align-items-center justify-content-between">
-            <a href="change-color.php?color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
-            <a href="change-color.php?color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
+            <a href="islem.php?islem=renk&color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
+            <a href="islem.php?islem=renk&color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
         </div>
     </div>
 </div>
 </body>
 </html>
+
+<?php 
+$_SESSION['error'] = null;
+$_SESSION['username']= null;
+$_SESSION['password']= null;
+
+
+?>
