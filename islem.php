@@ -86,6 +86,3 @@ if(get('islem') == 'renk'){
 
     header('Location:'.$_SERVER['HTTP_REFERER'] ?? 'index.php');
 }
-
-
-<div class="styles__ContentBox-sc-1y0wwe4-4 fLZrgI mb-5"><div class="styles__CourseBody-sc-qhw4sa-9 eBSqnE"><div><h3>Ödev 1</h3><p style="display: none">Ödev yok hadi yine iyisiniz :D</p></div></div></div>
